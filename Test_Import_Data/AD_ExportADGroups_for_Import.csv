@@ -1,4 +1,4 @@
-"Description","DisplayName","DistinguishedName","GroupCategory","GroupScope","Instance","Name","Path","SamAccountName"
+﻿"Description","DisplayName","DistinguishedName","GroupCategory","GroupScope","Instance","Name","Path","SamAccountName"
 "Administrators have complete and unrestricted access to the computer/domain","","CN=Administrators,CN=Builtin,DC=testdomain,DC=local","Security","DomainLocal",,"Administrators","CN=Administrators,CN=Builtin,DC=testdomain,DC=local","Administrators"
 "Users are prevented from making accidental or intentional system-wide changes and can run most applications","","CN=Users,CN=Builtin,DC=testdomain,DC=local","Security","DomainLocal",,"Users","CN=Users,CN=Builtin,DC=testdomain,DC=local","Users"
 "Guests have the same access as members of the Users group by default, except for the Guest account which is further restricted","","CN=Guests,CN=Builtin,DC=testdomain,DC=local","Security","DomainLocal",,"Guests","CN=Guests,CN=Builtin,DC=testdomain,DC=local","Guests"
