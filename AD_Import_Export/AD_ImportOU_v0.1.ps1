@@ -3,13 +3,15 @@ By Martin Carroll
 Version 0.1 - tested and working.
 #>
 
-Import-Module ActiveDirectory
+Import-Module ActiveDirectory -ErrorAction Stop
 
 # Complete the path to the .csv file.
-
+Write-Host "------------------------------------------------------------"
+Write-Host "TESTED SCRIPT, BUT USE WITH CAUTION"
 Write-Host "UNTESTED SORTING FUNCTION - USE WITH CAUTION - MANUALLY SORT INTO A HIERARCHY, OR TEST BEFORE USE."
 Write-Host "READ THE POWERSHELL SCRIPT BEFORE PROGRESSING, OR YOU MAY BREAK THE OU."
 Write-host "WARNING: No really, you could break it, really badly."
+Write-Host "------------------------------------------------------------"
 
 <#
 
@@ -30,16 +32,19 @@ This will ensure that it runs the creation of the OU in order, Parent > Child > 
 
 #>
 Write-Host "CSV file should have headers 'Name' and 'DistinguishedName'"
-$adou = Read-Host "Please provide the full path the csv file which is encoded with UTF8:"
+$adou = Read-Host "Please provide the full path the csv file which is encoded with UTF8"
+$adou = $adou -replace '"',''
 
 #Import the provided csv
 $adou_list = Import-Csv -Path $adou -Encoding UTF8
 
 #Sort the OU based on its hierarchy within the AD
+$sortedADOU = $adou_list | Sort-Object { ($_."DistinguishedName" -Split ','.count -1) }
 
-$sortedADOU = $adou_list | Sort-Object { ($_.DistinguishedName.Split(',').count -1) } -Descending
+$sortedADOU | export-csv -Path "$($pwd)\ADOU_Sorted.csv" -NoTypeInformation -Encoding UTF8
 
-# Iterate through each item in the sorted ADOU CSV and find the header, then select the relevant header.
+$sortedADOU = Import-Csv -Path "$($pwd)\ADOU_Sorted.csv" -Encoding UTF8
+#Iterate through each item in the sorted ADOU CSV and find the header, then select the relevant header.
 
 foreach ($ou in $sortedADOU)
 {
@@ -49,5 +54,9 @@ foreach ($ou in $sortedADOU)
     $path = $ou.DistinguishedName
     # Create those AD OUs.
     New-ADOrganizationalUnit -Name $name -Path $path
+    if ($?) {
+        Write-Host "OU $name created successfully."
+    } else {
+        Write-Host "Failed to create OU $name. It may already exist or there was an error."
+    }
 }
-

@@ -3,7 +3,7 @@ By Martin Carroll
 Version 0.2 - Tested, working on lab.
 #>
 Write-Host "------------------------------------------------------------"
-Write-Host "UNTESTED SCRIPT, USE WITH CAUTION"
+Write-Host "TESTED SCRIPT, BUT USE WITH CAUTION"
 Write-Host "------------------------------------------------------------"
 Write-Host "Please read the powershell script before you use this script"
 Write-Host "Pay close attention to the UPN comment, as this must be unique in a forst, and may need to be edited for a child/new domain"
@@ -47,9 +47,6 @@ $enabledUsers | Export-Csv -Path "$script_path\AD_ExportADUsers_Enabled_all_Data
 
 $filteredUsers_csv = Import-Csv -Path "$script_path\AD_ExportADUsers_Enabled_all_Data.csv" | Select-Object *,"Path"
 
-# Iterate through the csv and set the Path value to the DistinguishedName value.
-$filteredUsers_csv | ForEach-Object {
-    $_.Path = $_.DistinguishedName }
 
 # Iterate through the csv and match the value in the Path column to the Regex Pattern. If it matches, replace the 
 # value of Path with the new value, which is stored in $matches[0] (this seems wrong, need to test).
@@ -57,7 +54,6 @@ $filteredUsers_csv | ForEach-Object {
 # Iterate through the csv and set the Path value to the DistinguishedName value.
 $filteredUsers_csv | ForEach-Object {
     $_.Path = $_.DistinguishedName
-    Write-Host "Assigned Path: $($_.Path)"
 }
 
 # Iterate through the csv and match the value in the Path column to the Regex Pattern.

@@ -25,29 +25,35 @@ Important:
 
 #>
 
-Import-Module ActiveDirectory
-Write-Host "Note that Account Delegated will be set to False, and Enabled set to True."
+Import-Module ActiveDirectory -ErrorAction Stop
+
+Write-Host "Note that Expiry will not be defined, Account Delegated will be set to False, and Enabled set to True."
 $input_path = Read-Host "Please enter a full path to import the required CSV (C:\users.csv): "
+$input_path = $input_path -replace '"',''
 $aduser = Import-Csv $input_path -Encoding UTF8
 
-foreach ($ou in $aduser)
+foreach ($row in $aduser)
 {
-    $expiry = $ou.AccountExpirationDate
     $accountdelegated = $False
-    $country = $ou.Country
-    $Description = $ou.Description
-    $DisplayName = $ou.DisplayName
-    $Email = $ou.EmailAddress
-    $EmployeeID = $ou.EmployeeID
+    $country = $row.Country
+    $Description = $row.Description
+    $DisplayName = $row.DisplayName
+    $Email = $row.EmailAddress
+    $EmployeeID = $row.EmployeeID
     $Enabled = $True
-    $GivenName = $ou.GivenName
-    $Initials = $ou.Initials
-    $Name = $ou.Name
-    $Path = $ou.Path
-    $SAM = $ou.SamAccountName
-    $scriptPath = $ou.ScriptPath
-    $surname = $ou.Surname
-    $UPN = $ou.UserPrincipalName
-    New-ADUser -AccountExpirationDate $expiry -AccountNotDelegated $accountdelegated -Country $country -Description $Description -DisplayName $DisplayName -EmailAddress $Email -EmployeeID $EmployeeID -Enabled $Enabled -GivenName $GivenName -Initials $Initials -Name $Name -Path $Path -SamAccountName $SAM -ScriptPath $scriptPath -Surname $surname -UserPrincipalName $UPN -AccountPassword (ConvertTo-SecureString -AsPlainText "DhshdnDlkau8DpoapdmA@!FasdVac" -Force)
-    Write-Host "Attempting to write $SAM"
+    $GivenName = $row.GivenName
+    $Initials = $row.Initials
+    $Name = $row.Name
+    $Path = $row.Path
+    $SAM = $row.SamAccountName
+    $scriptPath = $row.ScriptPath
+    $surname = $row.Surname
+    $UPN = $row.UserPrincipalName
+    New-ADUser -AccountNotDelegated $accountdelegated -Country $country -Description $Description -DisplayName $DisplayName -EmailAddress $Email -EmployeeID $EmployeeID -Enabled $Enabled -GivenName $GivenName -Initials $Initials -Name $Name -Path $Path -SamAccountName $SAM -ScriptPath $scriptPath -Surname $surname -UserPrincipalName $UPN -AccountPassword (ConvertTo-SecureString -AsPlainText "DhshdnDlkau8DpoapdmA@!FasdVac" -Force)
+    if ($?) {
+        Write-Host "User $SAM created successfully."
+    } else {
+        Write-Host "Failed to create user $SAM. It may already exist or there was an error."
+    }
+    
     }
