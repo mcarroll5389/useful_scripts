@@ -1,8 +1,18 @@
+<#
+By Martin Carroll
+Version 0.1 - tested and working.
+#>
+
 Import-Module ActiveDirectory -ErrorAction Stop
 
 Write-Host "------------------------------------------------------------"
-Write-Host "UNTESTED SCRIPT, USE WITH CAUTION"
+Write-Host "Please read the Powershell Script comments before you use this script"
+Write-Host "Used to import the Groups from AD."
+Write-Host "NOTE: This does NOT add users into the respective groups when copied - it is only used to create the groups, not assign members."
+Write-Host "To be used in conjuction with 'AD_ExportADGroups_vX.X.ps1'"
+Write-Host "You'll likely want to use the exported data with a '1-' at the start'"
 Write-Host "------------------------------------------------------------"
+Read-Host "Press Enter to continue"
 
 $import = Read-Host "Please enter the path to the CSV file you want to import (e.g., C:\path\to\your\file.csv)"
 $import = $import -replace '"',''
@@ -34,3 +44,4 @@ foreach ($group in $all_groups)
 }
 
 Write-Host "Script finished."
+Read-Host "Press Enter to continue"

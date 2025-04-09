@@ -2,13 +2,20 @@
 By Martin Carroll
 Version 0.1 - tested and working.
 #>
-
-Write-Host "Please read the powershell script before you use this script"
-Write-Host "This sets imported users to Enabled = True, and AccountDelegated to False" 
+Write-Host "------------------------------------------------------------"
+Write-Host "Please read the Powershell Script comments before you use this script"
+Write-Host "NOTE: This sets imported users to Enabled = True, and AccountDelegated = False" 
 Write-Host "This script is designed to be used with the headers of a output from: Get-ADUser -Filter * -Properties * | export-CSV -Path x -Encoding UTF8, header values have to match what is in the script"
-Write-Host "Path needs to set MANUALLY, not from an export, to the OU schema such as: OU=Users,DN=domain,DN=local - this will automatically then add them into the required OU. Ensure the OU exists first."
 Write-Host "You will need to run a bulk password reset on the users created for this script, as the password is hard coded into the script to create the user."
+Write-Host "------------------------------------------------------------"
+Read-Host "Press Enter to continue"
 
+Write-Host "------------------------------------------------------------"
+Write-Host "Used to import the Users from AD."
+Write-Host "To be used in conjuction with 'AD_ExportADUsers_vX.X.ps1'"
+Write-Host "You'll likely want to use the exported data with a '1-' at the start'"
+Write-Host "------------------------------------------------------------"
+Read-Host "Press Enter to continue"
 
 <#
 Customise this script as required as per the options available in the New-ADUser cmdlet, you'll need to add the array within the foreach look, then add it to the New-ADUser command.
@@ -57,3 +64,6 @@ foreach ($row in $aduser)
     }
     
     }
+
+Write-Host "Script completed."
+Read-Host "Press Enter to continue"
