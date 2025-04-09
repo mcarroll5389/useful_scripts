@@ -7,11 +7,20 @@ Import-Module ActiveDirectory -ErrorAction Stop
 
 # Complete the path to the .csv file.
 Write-Host "------------------------------------------------------------"
-Write-Host "TESTED SCRIPT, BUT USE WITH CAUTION"
-Write-Host "UNTESTED SORTING FUNCTION - USE WITH CAUTION - MANUALLY SORT INTO A HIERARCHY, OR TEST BEFORE USE."
-Write-Host "READ THE POWERSHELL SCRIPT BEFORE PROGRESSING, OR YOU MAY BREAK THE OU."
-Write-host "WARNING: No really, you could break it, really badly."
+Write-Host "Please read the Powershell Script comments before you use this script"
+Write-Host "The script will attempt to sort OUs from 'AD_ExportOU_vX.X.ps1' into a hierarchy and import'"
+
 Write-Host "------------------------------------------------------------"
+Read-Host "Press Enter to continue"
+
+Write-Host "------------------------------------------------------------"
+Write-Host "READ THE POWERSHELL SCRIPT BEFORE PROGRESSING, OR YOU MAY BREAK AD."
+Write-Host "Used to import the OUs from AD."
+Write-Host "To be used in conjuction with 'AD_ExportOU_vX.X.ps1'"
+Write-Host "You'll likely want to use the exported data with a '1-' at the start'"
+Write-Host "------------------------------------------------------------"
+Read-Host "Press Enter to continue"
+
 
 <#
 
@@ -60,3 +69,6 @@ foreach ($ou in $sortedADOU)
         Write-Host "Failed to create OU $name. It may already exist or there was an error."
     }
 }
+
+Write-Host "Script completed."
+Read-Host "Press Enter to continue"

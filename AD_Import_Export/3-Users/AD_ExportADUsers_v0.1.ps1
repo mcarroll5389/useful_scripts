@@ -1,15 +1,14 @@
 <#
 By Martin Carroll
-Version 0.2 - Tested, working on lab.
+Version 0.1- Tested, working on lab.
 #>
+
 Write-Host "------------------------------------------------------------"
-Write-Host "TESTED SCRIPT, BUT USE WITH CAUTION"
-Write-Host "------------------------------------------------------------"
-Write-Host "Please read the powershell script before you use this script"
-Write-Host "Pay close attention to the UPN comment, as this must be unique in a forst, and may need to be edited for a child/new domain"
-Write-Host "This script exports all ADUsers and some of their properties to suitable CSV. It creates multiple csvs with different purposes" 
+Write-Host "Please read the Powershell Script comments before you use this script"
+Write-Host "Pay close attention to the 'UPN' comment, as this must be unique in a forst, and may need to be edited for a child/new domain"
+Write-Host "This script exports all ADUsers and some of their properties to a suitable CSV. It creates multiple csvs with different purposes" 
 Write-Host "You can add additional properties to extract if required, as per Get-ADUser cmdlet - but may not work with custom attributes"
-Write-Host "Path (used for import) is not created automatically - the script will attempt to make this using the DistinguishedName and regex"
+Write-Host "'Path' (used for import) is not created automatically - the script will attempt to make this using the DistinguishedName and regex"
 Write-Host "It'll attempt to make it in the format of: OU=Users,DN=domain,DN=local"
 Write-Host "------------------------------------------------------------"
 
@@ -34,18 +33,18 @@ $script_path = ($pwd).path
 $allusers = Get-ADUser -Filter * -Properties *
 
 # Export all users to a csv (all data)
-$allusers | Export-Csv -Path "$script_path\AD_ExportADUsers_all_ADUsers_all_Data.csv" -Encoding UTF8
+$allusers | Export-Csv -Path "$script_path\4-AD_ExportADUsers_all_ADUsers_all_Data.csv" -Encoding UTF8
 
 #Select only enabled users.
 $enabledUsers = $allusers | Where-Object { $_.Enabled -eq $true}
 
 # Export enabled users to a csv (all data)
-$enabledUsers | Export-Csv -Path "$script_path\AD_ExportADUsers_Enabled_all_Data.csv" -Encoding UTF8
+$enabledUsers | Export-Csv -Path "$script_path\3-AD_ExportADUsers_Enabled_all_Data.csv" -Encoding UTF8
 
 # Import FilteredUsers to a CSV variable, copy the DN value into a Path column, 
 # then change the Path values into suitable path values ready for the Add-ADUser cmdlet arguements.
 
-$filteredUsers_csv = Import-Csv -Path "$script_path\AD_ExportADUsers_Enabled_all_Data.csv" | Select-Object *,"Path"
+$filteredUsers_csv = Import-Csv -Path "$script_path\3-AD_ExportADUsers_Enabled_all_Data.csv" | Select-Object *,"Path"
 
 
 # Iterate through the csv and match the value in the Path column to the Regex Pattern. If it matches, replace the 
@@ -64,11 +63,13 @@ foreach ($entry in $filteredUsers_csv) {
 }
 
 #Output all data, but with the path variable added.
-$filteredUsers_csv | Export-Csv -Path "$script_path\AD_ExportADUsers_Enabled_for_Import_allData.csv" -Encoding UTF8
+$filteredUsers_csv | Export-Csv -Path "$script_path\2-AD_ExportADUsers_Enabled_for_Import_allData.csv" -Encoding UTF8
 
 #Filter users based on importable objects.
 $filteredUsers_csv_small = $filteredUsers_csv | Select-Object -Property AccountExpirationDate, AccountDelegated, Country, Description, DisplayName, EmailAddress, EmployeeID, GivenName, Initials, Name, Path, SamAccountName, ScriptPath, Surname, UserPrincipalName
-$filteredUsers_csv_small | Export-Csv -Path "$script_path\AD_ExportADUsers_Enabled_for_Import_filteredData.csv" -Encoding UTF8
+$filteredUsers_csv_small | Export-Csv -Path "$script_path\1-AD_ExportADUsers_Enabled_for_Import_filteredData.csv" -Encoding UTF8
 
 Write-Host "Output files to $script_path."
 Write-Host "Completed."
+
+Read-Host "Press Enter to continue"
