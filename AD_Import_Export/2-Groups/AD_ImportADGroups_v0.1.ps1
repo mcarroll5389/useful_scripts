@@ -37,9 +37,9 @@ foreach ($group in $all_groups)
 
     New-ADGroup -Description $Description -DisplayName $DisplayName -GroupCategory $groupCategory -GroupScope $groupScope -HomePage $homepage -Instance $instance -ManagedBy $managedBy -Name $Name -Path $Path -SamAccountName $SAM -Server $server -ErrorAction SilentlyContinue
     if ($?) {
-        Write-Host "Group $DisplayName created successfully."
+        Write-Host "Group $Name created successfully."
     } else {
-        Write-Host "Failed to create group $DisplayName . It may already exist or there was an error."
+        Write-Host "Failed to create group $Name - It may already exist or there was an error."
     }
 }
 
