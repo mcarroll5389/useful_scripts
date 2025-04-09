@@ -17,12 +17,12 @@ Read-Host "Press Enter to continue..."
 $script_path = ($PWD).path
 
 $all_ADGroup_Data = Get-ADGroup -Filter * -Properties *
-$all_ADGroup_Data | Export-Csv -Path "$script_path\AD_Groups_All_Data.csv" -NoTypeInformation -Encoding UTF8
+$all_ADGroup_Data | Export-Csv -Path "$script_path\AD_ExportADGroups_All_Data.csv" -NoTypeInformation -Encoding UTF8
 
 $filtered_ADGroup_Data = $all_ADGroup_Data | Select-Object Description, DisplayName, DistinguishedName, GroupCategory, GroupScope, Instance, Name, SamAccountName
-$filtered_ADGroup_Data | Export-Csv -Path "$script_path\AD_Groups_Filtered.csv" -NoTypeInformation -Encoding UTF8
+$filtered_ADGroup_Data | Export-Csv -Path "$script_path\AD_ExportADGroups_Filtered.csv" -NoTypeInformation -Encoding UTF8
 
-$path_ADGroups = Import-Csv -Path "$script_path\AD_Groups_All_Data.csv" | Select-Object *,"Path"
+$path_ADGroups = Import-Csv -Path "$script_path\AD_ExportADGroups_All_Data.csv" | Select-Object *,"Path"
 
 
 $path_ADGroups | ForEach-Object {
