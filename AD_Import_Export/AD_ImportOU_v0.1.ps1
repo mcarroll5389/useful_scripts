@@ -41,9 +41,9 @@ $adou_list = Import-Csv -Path $adou -Encoding UTF8
 #Sort the OU based on its hierarchy within the AD
 $sortedADOU = $adou_list | Sort-Object { ($_."DistinguishedName" -Split ','.count -1) }
 
-$sortedADOU | export-csv -Path "$($pwd)\ADOU_Sorted.csv" -NoTypeInformation -Encoding UTF8
+# $sortedADOU | export-csv -Path "$($pwd)\ADOU_Sorted.csv" -NoTypeInformation -Encoding UTF8
 
-$sortedADOU = Import-Csv -Path "$($pwd)\ADOU_Sorted.csv" -Encoding UTF8
+# $sortedADOU = Import-Csv -Path "$($pwd)\ADOU_Sorted.csv" -Encoding UTF8
 #Iterate through each item in the sorted ADOU CSV and find the header, then select the relevant header.
 
 foreach ($ou in $sortedADOU)
